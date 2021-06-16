@@ -30,21 +30,17 @@ const Main = () =>{
         }
         const fetchIndonesiaData = async () =>{
             let response = await getDataIndonesia();
-            setIndonesia(response.data.map((el,index)=>{
+            setIndonesia(response.data.features.map((el,index)=>{
                 const {Provinsi, Kasus_Posi, Kasus_Semb,Kasus_Meni} = el.attributes
                 let key = index + 1;
                 return {key, Provinsi, Kasus_Posi, Kasus_Semb,Kasus_Meni}
             })) 
-            //setIndonesia(response.data.attributes)
-        }
-        const fetchglobalData = async ()=>{
-           let response =  await getDataGlobal();
-           setGlobal(response.data)
+            // setIndonesia(response.data.features)
         }
         fetchIndonesiaData()
         fetchDataTotal();
-        console.log(global)
-    },[global])
+        console.log(data)
+    },[])
 
     const columnsDataIndonesia = [
         {
@@ -98,13 +94,13 @@ const Main = () =>{
     return(
         <Layout className="layout">
         <Content style={{ padding: '0 50px', marginTop:"4%", width:'80%',margin:'auto' }}>
+            <Title style={{marginTop:'10px'}}>Data Covid Indonesia</Title>
             {(data.length < 1) ?
                 <Text>Loading.....</Text>
                 :
                 <HighlightData data = {data}/>
             }   
-            <Title style={{marginTop:'10px'}}>Data Covid Indonesia</Title>
-            <Input placeholder="Search Provinsi" style={{ width: '20%' }} value={text} onChange={(e)=>{setText(e.target.value)}}></Input>
+            <Input placeholder="Search Provinsi" style={{ width: '20%',marginTop:"4%" }} value={text} onChange={(e)=>{setText(e.target.value)}}></Input>
             <Table dataSource={searchFilter(indonesia)}  onChange={onChange} columns={columnsDataIndonesia} size={10} pagination={{ defaultPageSize: 10}} style={{backgroundColor:'white',marginTop:"2%", padding:'10px'}}/>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
